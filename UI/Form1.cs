@@ -13,6 +13,8 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
+        dgvStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+        dgvStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         _studentBLL = new StudentBLL();
         cboGender.SelectedIndex = 0;
     }
@@ -27,6 +29,11 @@ public partial class Form1 : Form
         try
         {
             dgvStudents.DataSource = _studentBLL.GetAll();
+            dgvStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            if (dgvStudents.Columns.Count > 0)
+            {
+                dgvStudents.Columns[dgvStudents.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
         }
         catch (Exception ex)
         {
