@@ -1,0 +1,6 @@
+USE StudentDB;
+GO
+
+ALTER TABLE Students ADD CONSTRAINT UQ_Email UNIQUE(Email);
+ALTER TABLE Students ADD CONSTRAINT UQ_Phone UNIQUE(Phone);
+GO

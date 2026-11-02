@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using BLL;
 using DTO;
+using Microsoft.Data.SqlClient;
 
 namespace UI;
 
@@ -94,6 +95,10 @@ public partial class Form1 : Form
                 ClearInputs();
             }
         }
+        catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+        {
+            MessageBox.Show("Mã sinh viên, Email hoặc Số điện thoại đã tồn tại trong hệ thống. Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -117,6 +122,10 @@ public partial class Form1 : Form
                 LoadStudents();
                 ClearInputs();
             }
+        }
+        catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+        {
+            MessageBox.Show("Mã sinh viên, Email hoặc Số điện thoại đã tồn tại trong hệ thống. Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         catch (Exception ex)
         {
