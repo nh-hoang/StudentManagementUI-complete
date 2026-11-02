@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Tests;
 
 [TestClass]
-public sealed class Test1
+public sealed class StudentBLLTests
 {
     private StudentBLL _studentBLL = null!;
 
@@ -21,7 +21,7 @@ public sealed class Test1
         return new StudentDTO
         {
             Id = 1,
-            Code = "SV001",
+            Code = "2026001",
             FullName = "Nguyễn Văn A",
             BirthDate = new DateTime(2004, 5, 15),
             Gender = "Nam",
@@ -85,16 +85,18 @@ public sealed class Test1
         Assert.AreEqual("Điểm trung bình (GPA) phải nằm trong khoảng từ 0 đến 4.", errorMessage);
     }
 
-    // Test Case 5: Sinh viên hợp lệ với GPA trung bình (2.5)
+    // Test Case 5: Sinh viên hợp lệ đi qua toàn bộ logic kiểm tra (kể cả mã không bắt đầu bằng SV)
     [TestMethod]
-    public void ValidateStudent_ValidStudent_NormalGPA_ReturnsTrue()
+    public void Validate_ValidStudent_PassesLogic()
     {
         var student = CreateValidStudent();
+        student.Code = "IT001";
         student.GPA = 2.5;
 
         bool isValid = _studentBLL.ValidateStudent(student, out string errorMessage);
 
         Assert.IsTrue(isValid);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(student.Code));
         Assert.AreEqual(string.Empty, errorMessage);
     }
 
@@ -108,23 +110,10 @@ public sealed class Test1
         bool isValid = _studentBLL.ValidateStudent(student, out string errorMessage);
 
         Assert.IsFalse(isValid);
-        Assert.AreEqual("Mã sinh viên (Code) phải bắt đầu bằng 'SV'.", errorMessage);
+        Assert.AreEqual("Mã sinh viên (Code) không được để trống.", errorMessage);
     }
 
-    // Test Case 7: Mã sinh viên (Code) không bắt đầu bằng "SV"
-    [TestMethod]
-    public void ValidateStudent_CodeNotStartingWithSV_ReturnsFalse()
-    {
-        var student = CreateValidStudent();
-        student.Code = "IT001";
-
-        bool isValid = _studentBLL.ValidateStudent(student, out string errorMessage);
-
-        Assert.IsFalse(isValid);
-        Assert.AreEqual("Mã sinh viên (Code) phải bắt đầu bằng 'SV'.", errorMessage);
-    }
-
-    // Test Case 8: Họ tên sinh viên (FullName) rỗng
+    // Test Case 7: Họ tên sinh viên (FullName) rỗng
     [TestMethod]
     public void ValidateStudent_EmptyFullName_ReturnsFalse()
     {
@@ -137,7 +126,7 @@ public sealed class Test1
         Assert.AreEqual("Họ tên sinh viên (FullName) không được để trống.", errorMessage);
     }
 
-    // Test Case 9: Đối tượng StudentDTO là null
+    // Test Case 8: Đối tượng StudentDTO là null
     [TestMethod]
     public void ValidateStudent_NullStudent_ReturnsFalse()
     {
@@ -147,7 +136,7 @@ public sealed class Test1
         Assert.AreEqual("Thông tin sinh viên không được để trống.", errorMessage);
     }
 
-    // Test Case 10: Hàm Add ném ArgumentException khi GPA vượt biên (4.01)
+    // Test Case 9: Hàm Add ném ArgumentException khi GPA vượt biên (4.01)
     [TestMethod]
     public void AddStudent_InvalidGPA_4Point01_ThrowsArgumentException()
     {

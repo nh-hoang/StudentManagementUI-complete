@@ -35,9 +35,9 @@ namespace BLL
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(student.Code) || !student.Code.Trim().StartsWith("SV", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(student.Code))
             {
-                errorMessage = "Mã sinh viên (Code) phải bắt đầu bằng 'SV'.";
+                errorMessage = "Mã sinh viên (Code) không được để trống.";
                 _logger.LogWarning("Kiểm tra hợp lệ thất bại cho mã '{Code}': {Error}", student.Code, errorMessage);
                 return false;
             }
